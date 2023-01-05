@@ -29,6 +29,7 @@ tasks:
       "$HOME/.ghcup/bin/ghcup" install ghc "ghc-8.10.7"
       "$HOME/.ghcup/bin/ghcup" install ghc "ghc-9.0.2"
       "$HOME/.ghcup/bin/ghcup" install ghc "ghc-9.2.2"
+      "$HOME/.ghcup/bin/ghcup" install ghc "ghc-9.4.2"
       cabal update
   - 8_10_7-prepare: |
       cd qbe-hs
@@ -85,6 +86,25 @@ tasks:
       cd qbe-hs
       cabal test all --enable-tests
   - 9_2_2-haddock: |
+      cd qbe-hs
+      cabal haddock all
+  - 9_4_2-prepare: |
+      cd qbe-hs
+      cabal configure -w ghc-9.2.2
+  - 9_4_2-check: |
+      cd qbe-hs
+      cabal check
+  - 9_4_2-dependencies: |
+      cd qbe-hs
+      cabal build all --enable-tests --only-dependencies
+      cabal build all --only-dependencies
+  - 9_4_2-build: |
+      cd qbe-hs
+      cabal build all
+  - 9_4_2-test: |
+      cd qbe-hs
+      cabal test all --enable-tests
+  - 9_4_2-haddock: |
       cd qbe-hs
       cabal haddock all
 triggers:
