@@ -357,6 +357,7 @@ instance Pretty Jump where
     "jnz" <+> pretty val <> comma
     <+> pretty label1 <> comma
     <+> pretty label2
+  pretty (Ret val) = "ret" <+> pretty val
   pretty Hlt = "hlt"
   pretty Next = ""
 
