@@ -347,6 +347,8 @@ data Jump
   = Jmp (Ident 'Label) -- ^ Unconditional jump
   | Jnz Val (Ident 'Label) (Ident 'Label) -- ^ Conditional jump
   | Ret (Maybe Val) -- ^ Function return
+  | Hlt -- ^ Halt
+  | Next -- ^ Let backend insert the jump instruction to the next block
   deriving (Show, Eq)
 
 instance Pretty Jump where
@@ -355,7 +357,8 @@ instance Pretty Jump where
     "jnz" <+> pretty val <> comma
     <+> pretty label1 <> comma
     <+> pretty label2
-  pretty (Ret val) = "ret" <+> pretty val
+  pretty Hlt = "hlt"
+  pretty Next = ""
 
 -- * Instructions
 -----------------
@@ -384,6 +387,9 @@ data Inst
   -- Memory
   -- | @stored@/@stores@/@storel@/@storew@/@storeh@/@storeb@
   | Store ExtTy Val Val
+  | Alloc4 Val
+  | Alloc8 Val
+  | Alloc16 Val
   -- MAYBE collapse all the Loads in a single Load constructor and just discard
   -- the intrepr when unused.
   -- | @loadw@/@loadl@/@loads@/@loadd@
@@ -439,6 +445,12 @@ instance Pretty Inst where
     pretty assignment <+> "neg" <+> pretty v
   pretty (Store ty v address) =
     "store" <> pretty ty <+> pretty v <> comma <+> pretty address
+  pretty (Alloc4 size) =
+    "alloc4" <+> pretty size
+  pretty (Alloc8 size) =
+    "alloc8" <+> pretty size
+  pretty (Alloc16 size) =
+    "alloc16" <+> pretty size
   pretty (Load  assignment loadTy addr) =
     pretty assignment <+> "load" <> pretty loadTy <+> pretty addr
   pretty (LoadW assignment intRepr addr) =

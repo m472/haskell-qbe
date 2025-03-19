@@ -6,3 +6,4 @@ dist-newstyle
 *.hi
 .ghc.environment.*
 *.tix
+.direnv/
