@@ -481,9 +481,9 @@ data Inst
       -- | @stored@/@stores@/@storel@/@storew@/@storeh@/@storeb@
       Neg Assignment Val
     | Store ExtTy Val Val
-    | Alloc4 Val
-    | Alloc8 Val
-    | Alloc16 Val
+    | Alloc4 Assignment Val
+    | Alloc8 Assignment Val
+    | Alloc16 Assignment Val
     | -- MAYBE collapse all the Loads in a single Load constructor and just discard
       -- the intrepr when unused.
 
@@ -544,12 +544,12 @@ instance Pretty Inst where
         pretty assignment <+> "neg" <+> pretty v
     pretty (Store ty v address) =
         "store" <> pretty ty <+> pretty v <> comma <+> pretty address
-    pretty (Alloc4 size) =
-        "alloc4" <+> pretty size
-    pretty (Alloc8 size) =
-        "alloc8" <+> pretty size
-    pretty (Alloc16 size) =
-        "alloc16" <+> pretty size
+    pretty (Alloc4 assignment size) =
+        pretty assignment <+> "alloc4" <+> pretty size
+    pretty (Alloc8 assignment size) =
+        pretty assignment <+> "alloc8" <+> pretty size
+    pretty (Alloc16 assignment size) =
+        pretty assignment <+> "alloc16" <+> pretty size
     pretty (Load assignment loadTy addr) =
         pretty assignment <+> "load" <> pretty loadTy <+> pretty addr
     pretty (LoadW assignment intRepr addr) =

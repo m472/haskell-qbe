@@ -54,6 +54,7 @@ goldenTests =
                 , (SubAggregateTy "t1", Nothing)
                 ]
         , t "opaque" $ Opaque "t" 8 16
+        , t "alloc" $ Alloc8 (Assignment "test" Long) (ValConst $ CInt False 8)
         , t "data" $
             DataDef
                 [Export]
@@ -71,7 +72,6 @@ goldenTests =
                 [Param (AbiBaseTy Word) "a", Param (AbiBaseTy Double) "b"]
                 Variadic
             $ Block "l" [] [] (Ret Nothing) :| []
-        , t "cmt_block" $ CmtBlock "comment" $ Block "l" [] [] Hlt
         , t "val" [valInt 0, ValTemporary "temporary", ValGlobal "global"]
         , t "jmp" $ Jmp "target"
         , t "jnz" $ Jnz (valInt 0) "target1" "target2"

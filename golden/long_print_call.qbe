@@ -1,0 +1,1 @@
+call $printf (l %long_variable_name_1, l %long_variable_name_2, l %long_variable_name_3, l %long_variable_name_4, l %long_variable_name_5, l %long_variable_name_6, l %long_variable_name_7, l %long_variable_name_8, l %long_variable_name_9, l %long_variable_name_10)
