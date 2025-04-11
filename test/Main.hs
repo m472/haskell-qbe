@@ -63,6 +63,13 @@ goldenTests =
                 [ FieldZero 16
                 , FieldExtTy Byte $ Symbol "g" (Just 32) :| [String "foo\nbar\0baz", Const $ CInt True 1]
                 ]
+        , t "unicode" $
+            DataDef
+                [Export]
+                "d"
+                (Just 8)
+                [ FieldExtTy Byte $ Symbol "g" (Just 32) :| [String "ε 🥳"]
+                ]
         , t "function"
             $ FuncDef
                 [Export]

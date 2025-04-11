@@ -91,7 +91,6 @@ module Language.QBE (
     layoutOptions,
 ) where
 
-import Data.ByteString (ByteString)
 import Data.List.NonEmpty (NonEmpty, toList)
 import Data.Maybe (maybeToList)
 import Data.Text (Text)
@@ -317,14 +316,28 @@ instance Pretty DataDef where
 
 data DataItem
     = Symbol (Ident 'Global) (Maybe Alignment)
-    | String ByteString
+    | String String
     | Const Const
     deriving (Show, Eq)
 
 instance Pretty DataItem where
     pretty (Symbol ident alignment) =
         hsep $ pretty ident : maybeToList ((pretty '+' <+>) . pretty <$> alignment)
-    pretty (String bs) = pretty $ show bs -- HACK: hoping that the escape sequences are the same...
+    pretty (String s) = pretty $ "\"" <> concatMap escapeChar s <> "\""
+      where
+        escapeChar :: Char -> [Char]
+        escapeChar '\0' = "\\NUL"
+        escapeChar '\a' = "\\a"
+        escapeChar '\b' = "\\b"
+        escapeChar '\f' = "\\f"
+        escapeChar '\n' = "\\n"
+        escapeChar '\r' = "\\r"
+        escapeChar '\t' = "\\t"
+        escapeChar '\v' = "\\v"
+        escapeChar '\\' = "\\"
+        escapeChar '\'' = "\'"
+        escapeChar '\"' = "\""
+        escapeChar c = [c]
     pretty (Const c) = pretty c
 
 data Field
